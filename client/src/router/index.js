@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
-import Admin from "../views/Admin.vue";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 
@@ -19,11 +18,16 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
-    component: Admin,
+    component: () => import("../components/DashboardLayout"),
     meta: {
       requireAuth: true,
     },
     children: [
+      {
+        path: "users/:id",
+        name: "SingelUser",
+        component: () => import("../views/SingleUser"),
+      },
       {
         path: "users",
         name: "UserManagement",
@@ -45,7 +49,7 @@ const routes = [
         component: () => import("../views/Transactions"),
       },
       {
-        path: "dashboard",
+        path: "",
         name: "Dashboard",
         component: () => import("../views/Dashboard"),
       },
@@ -69,6 +73,14 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
 
+    meta: {
+      requireAuth: false,
+    },
+  },
+  {
+    path: "*",
+    name: "NotFound",
+    component: () => import("../views/PageNotFound"),
     meta: {
       requireAuth: false,
     },

@@ -33,7 +33,9 @@
 
           <tbody class="bg-white">
             <tr>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+              <td
+                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer"
+              >
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-10 w-10">
                     <img
@@ -79,7 +81,9 @@
               <td
                 class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium"
               >
-                <a href="#" class="text-indigo-600 hover:text-indigo-900"
+                <a
+                  @click.prevent="$router.push('/admin/users/1')"
+                  class="text-indigo-600 hover:text-indigo-900"
                   >Edit</a
                 >
               </td>
