@@ -1,25 +1,36 @@
 <template>
-  <div>
-    <h1>This is an home page</h1>
-    <button @click="check">CLick me</button>
-    <button @click="logout">Logout</button>
-  </div>
+  <DashboardLayout>
+    <template slot="status">
+      <Status />
+    </template>
+    <template slot="body">
+      <UserList />
+    </template>
+  </DashboardLayout>
 </template>
 
 <script>
+import DashboardLayout from "../components/DashboardLayout";
+import Status from "../components/Status";
+import UserList from "../components/UserList";
 export default {
-  data() {
-    return {};
+  components: {
+    DashboardLayout,
+    Status,
+    UserList,
   },
-  methods: {
-    async check() {
-      const res = await this.$store.dispatch("auth/currentUser");
-      console.log(res);
-    },
-    logout() {
-      this.$store.dispatch("auth/logout");
-      this.$router.push("/login");
-    },
-  },
+  // data() {
+  //   return {};
+  // },
+  // methods: {
+  //   async check() {
+  //     const res = await this.$store.dispatch("auth/currentUser");
+  //     console.log(res);
+  //   },
+  //   logout() {
+  //     this.$store.dispatch("auth/logout");
+  //     this.$router.push("/login");
+  //   },
+  // },
 };
 </script>
