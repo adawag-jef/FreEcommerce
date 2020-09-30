@@ -19,6 +19,9 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   console.log("Connected to mongodb");
 });
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/dist"));
+}
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -27,6 +30,11 @@ app.use(passport.initialize());
 // routes
 app.use("/api/auth", require("./routes/authRoute"));
 
+if (process.env.NODE_ENV === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/dist/index.html"));
+  });
+}
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
