@@ -54,7 +54,7 @@ export default {
           password: this.password,
         });
         if (success) {
-          this.$router.push("/");
+          this.$router.push("/admin/dashboard");
         }
       } catch (error) {
         console.log(error);

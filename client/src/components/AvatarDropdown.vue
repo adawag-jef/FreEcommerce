@@ -30,6 +30,7 @@
       >
       <a
         href="/login"
+        @click.prevent="logout"
         class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
         >Logout</a
       >
@@ -42,6 +43,12 @@ export default {
   props: {
     dropdownOpen: { type: Boolean, default: false },
     setDropDown: { type: Function },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    },
   },
 };
 </script>

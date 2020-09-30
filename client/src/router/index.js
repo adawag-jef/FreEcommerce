@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
+import Admin from "../views/Admin.vue";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 
@@ -12,9 +13,45 @@ const routes = [
     name: "Home",
     component: Home,
     meta: {
-      requireAuth: true,
+      requireAuth: false,
     },
   },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
+    meta: {
+      requireAuth: true,
+    },
+    children: [
+      {
+        path: "users",
+        name: "UserManagement",
+        component: () => import("../views/UserManagement"),
+      },
+      {
+        path: "products",
+        name: "ProductManagement",
+        component: () => import("../views/ProductManagement"),
+      },
+      {
+        path: "categories",
+        name: "CategoryManagement",
+        component: () => import("../views/CategoryManagement"),
+      },
+      {
+        path: "transactions",
+        name: "Transactions",
+        component: () => import("../views/Transactions"),
+      },
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("../views/Dashboard"),
+      },
+    ],
+  },
+
   {
     path: "/login",
     name: "Login",
@@ -55,7 +92,7 @@ router.beforeEach((to, from, next) => {
   } else {
     if (to.fullPath === "/login") {
       if (store.getters["auth/isAuthenticated"]) {
-        next("/");
+        next("/admin/dashboard");
       }
     }
     next();
