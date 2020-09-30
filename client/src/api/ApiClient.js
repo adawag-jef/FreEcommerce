@@ -1,9 +1,8 @@
 import axios from "axios";
 
-const getClient = (baseUrl = null, headers = null) => {
+const getClient = (baseUrl = null) => {
   const options = {
     baseURL: baseUrl,
-    headers: headers,
   };
 
   const client = axios.create(options);

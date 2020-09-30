@@ -63,10 +63,10 @@ const AuthController = {
     }
   },
 
-  logOut(req, res, next) {
-    req.logout();
-    res.status(200).send({ success: true, msg: "Successfully Logout." });
-  },
+  // logOut(req, res, next) {
+  //   req.logout();
+  //   res.status(200).send({ success: true, msg: "Successfully Logout." });
+  // },
 
   profile(req, res, next) {
     return res.status(200).send({ success: true, msg: req.user });
