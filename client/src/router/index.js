@@ -10,7 +10,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../components/DefaultLayout"),
+    component: () => import("../layouts/DefaultLayout"),
     meta: {
       requireAuth: false,
       isAdmin: false,
@@ -31,7 +31,7 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
-    component: () => import("../components/DashboardLayout"),
+    component: () => import("../layouts/DashboardLayout"),
     meta: {
       requireAuth: true,
       isAdmin: true,

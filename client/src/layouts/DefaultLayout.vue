@@ -135,7 +135,7 @@
             </template>
             <template v-else>
               <a
-                class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0"
+                class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0 cursor-pointer"
                 @click.prevent="logout"
                 >Logout</a
               >

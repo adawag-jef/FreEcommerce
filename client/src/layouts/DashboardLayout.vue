@@ -172,8 +172,8 @@
 </template>
 
 <script>
-import AvatarDropdown from "./AvatarDropdown";
-import NotificationDropdown from "./NotificationDropdown";
+import AvatarDropdown from "../components/AvatarDropdown";
+import NotificationDropdown from "../components/NotificationDropdown";
 export default {
   components: {
     AvatarDropdown,
