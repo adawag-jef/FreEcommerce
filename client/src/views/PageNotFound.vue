@@ -29,6 +29,6 @@ export default {};
 
 <style scoped>
 .gradient {
-  background-image: linear-gradient(135deg, #684ca0 35%, #1c4ca0 100%);
+  background-image: linear-gradient(135deg, #56a04c 35%, #27a01c 100%);
 }
 </style>

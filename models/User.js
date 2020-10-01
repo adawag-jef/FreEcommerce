@@ -5,6 +5,7 @@ let UserSchema = new mongoose.Schema({
   username: { type: String, unique: true },
   email: String,
   password: String,
+  role: { type: String, enum: ["user", "admin"], default: "user" },
 });
 
 UserSchema.pre("save", function (next) {

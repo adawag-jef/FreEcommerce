@@ -13,6 +13,7 @@ const routes = [
     component: Home,
     meta: {
       requireAuth: false,
+      isAdmin: false,
     },
   },
   {
@@ -21,6 +22,7 @@ const routes = [
     component: () => import("../components/DashboardLayout"),
     meta: {
       requireAuth: true,
+      isAdmin: true,
     },
     children: [
       {
@@ -62,6 +64,7 @@ const routes = [
     component: Login,
     meta: {
       requireAuth: false,
+      isAdmin: false,
     },
   },
   {
@@ -75,6 +78,7 @@ const routes = [
 
     meta: {
       requireAuth: false,
+      isAdmin: false,
     },
   },
   {
@@ -83,6 +87,7 @@ const routes = [
     component: () => import("../views/PageNotFound"),
     meta: {
       requireAuth: false,
+      isAdmin: false,
     },
   },
 ];
@@ -94,17 +99,32 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // const _store = store;
   if (to.matched.some((record) => record.meta.requireAuth)) {
-    if (!store.getters["auth/isAuthenticated"]) {
-      next("/login");
+    const token = localStorage.getItem("token");
+    if (to.matched.some((record) => record.meta.isAdmin) && token) {
+      if (store.getters["auth/getCurrentUser"].role !== "admin") {
+        next("/");
+      } else {
+        next();
+      }
     } else {
-      next();
+      next("/login");
     }
   } else {
     if (to.fullPath === "/login") {
-      if (store.getters["auth/isAuthenticated"]) {
+      if (
+        store.getters["auth/isAuthenticated"] &&
+        store.getters["auth/getCurrentUser"].role === "admin"
+      ) {
         next("/admin");
+      }
+      if (
+        store.getters["auth/isAuthenticated"] &&
+        store.getters["auth/getCurrentUser"].role === "user"
+      ) {
+        next("/");
+      } else {
+        next();
       }
     }
     next();

@@ -4,29 +4,26 @@ export default {
   namespaced: true,
 
   state: () => ({
-    token: localStorage.getItem("token"),
     user: {},
-    isAuthenticated: localStorage.getItem("token") ? true : false,
+    isAuthenticated: false,
   }),
 
   getters: {
     isAuthenticated(state) {
       return state.isAuthenticated;
     },
-    getToken(state) {
-      return state.token;
+    getCurrentUser(state) {
+      return state.user;
     },
   },
   mutations: {
     SET_TOKEN(state, token) {
-      state.token = token;
       localStorage.setItem("token", token);
     },
     SET_CURRENT_USER(state, user) {
       state.user = user;
     },
     REMOVE_TOKEN(state) {
-      state.token = "";
       localStorage.removeItem("token");
     },
     SET_IS_AUTHENTICATED(state, value) {
@@ -42,6 +39,7 @@ export default {
         ctx.commit("SET_CURRENT_USER", res.data.user);
         return res.data.success;
       } catch (error) {
+        debugger;
         console.log(error);
       }
     },
@@ -54,9 +52,10 @@ export default {
 
         return res.data.user;
       } catch (error) {
+        debugger;
         ctx.commit("REMOVE_TOKEN");
         ctx.commit("SET_IS_AUTHENTICATED", false);
-        ctx.commit("SET_CURRENT_USER", {});
+        ctx.commit("SET_CURRENT_USER", null);
         return false;
       }
     },
@@ -64,7 +63,7 @@ export default {
     logout(ctx, payload) {
       ctx.commit("REMOVE_TOKEN");
       ctx.commit("SET_IS_AUTHENTICATED", false);
-      ctx.commit("SET_CURRENT_USER", {});
+      ctx.commit("SET_CURRENT_USER", null);
     },
   },
 };

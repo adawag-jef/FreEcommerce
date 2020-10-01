@@ -19,6 +19,7 @@ const AuthController = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
+        role: "user",
       });
       // save the user
       newUser.save(function (err) {
@@ -51,7 +52,12 @@ const AuthController = {
           res.json({
             success: true,
             token: token,
-            user: { username: user.username, email: user.email, id: user.id },
+            user: {
+              username: user.username,
+              email: user.email,
+              id: user.id,
+              role: user.role,
+            },
           });
         } else {
           res.status(401).send({
@@ -78,6 +84,7 @@ const AuthController = {
         username: req.user.username,
         email: req.user.email,
         id: req.user.id,
+        role: req.user.role,
       },
     });
   },
