@@ -19,7 +19,7 @@
         <div class="flex items-center justify-center mt-8">
           <div class="flex items-center">
             <img src="/free.svg" alt="" class="h-12 w-12" />
-            <span class="text-white text-2xl ml-2 font-semibold">fre</span
+            <span class="text-gray-500 text-2xl ml-2 font-semibold">fre</span
             ><span class="text-green-500 text-2xl font-medium">Ecommerce</span>
           </div>
         </div>
