@@ -10,4 +10,7 @@ export default {
   listCategories: () => {
     return client.get("/api/category");
   },
+  postCategory: (category) => {
+    return client.post("/api/category", category);
+  },
 };

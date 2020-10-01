@@ -4,6 +4,7 @@ const CategoryController = {
   async listCategories(req, res) {
     try {
       const categories = await Category.find({})
+        .sort({ createdAt: "desc" })
         .populate("createdBy", "username id role")
         .exec();
       res.status(200).json(categories);

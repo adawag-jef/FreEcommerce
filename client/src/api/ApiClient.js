@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "../store";
 
 const getClient = (baseUrl = null) => {
   const options = {
@@ -19,6 +20,9 @@ const getClient = (baseUrl = null) => {
     (error) => {
       if (error.response.status >= 500) {
         throw error;
+      }
+      if (error.response.status === 401) {
+        store.dispatch("auth/logout");
       }
       return Promise.reject(error);
     }
