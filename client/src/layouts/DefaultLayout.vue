@@ -363,7 +363,9 @@
     </div>
     <main class="my-8">
       <div class="container mx-auto px-6">
-        <router-view></router-view>
+        <transition name="fade">
+          <router-view></router-view>
+        </transition>
       </div>
     </main>
 
@@ -390,6 +392,7 @@ export default {
   data() {
     return {
       cartOpen: false,
+      isOpen: false,
     };
   },
   computed: {
