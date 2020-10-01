@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
 import auth from "./auth";
+import category from "./category";
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     auth,
+    category,
   },
 });
