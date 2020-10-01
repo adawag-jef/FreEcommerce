@@ -1,8 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
-import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import adminRoute from "./adminRoute";
+import defaultRoute from "./defaultRoute";
 
 Vue.use(VueRouter);
 
@@ -15,18 +16,7 @@ const routes = [
       requireAuth: false,
       isAdmin: false,
     },
-    children: [
-      {
-        path: "about",
-        name: "AboutPage",
-        component: () => import("../views/About"),
-      },
-      {
-        path: "",
-        name: "HomePage",
-        component: () => import("../views/Home"),
-      },
-    ],
+    children: defaultRoute,
   },
   {
     path: "/admin",
@@ -36,38 +26,7 @@ const routes = [
       requireAuth: true,
       isAdmin: true,
     },
-    children: [
-      {
-        path: "users/:id",
-        name: "SingelUser",
-        component: () => import("../views/SingleUser"),
-      },
-      {
-        path: "users",
-        name: "UserManagement",
-        component: () => import("../views/UserManagement"),
-      },
-      {
-        path: "products",
-        name: "ProductManagement",
-        component: () => import("../views/ProductManagement"),
-      },
-      {
-        path: "categories",
-        name: "CategoryManagement",
-        component: () => import("../views/CategoryManagement"),
-      },
-      {
-        path: "transactions",
-        name: "Transactions",
-        component: () => import("../views/Transactions"),
-      },
-      {
-        path: "",
-        name: "Dashboard",
-        component: () => import("../views/Dashboard"),
-      },
-    ],
+    children: adminRoute,
   },
 
   {
