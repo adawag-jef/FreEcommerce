@@ -30,6 +30,7 @@ app.use(passport.initialize());
 
 // routes
 app.use("/api/auth", require("./routes/authRoute"));
+app.use("/api/category", require("./routes/categoryRoute"));
 
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {

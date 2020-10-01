@@ -1,7 +1,7 @@
 {
-  "name": "contentmanagementsystem",
+  "name": "fre-ecommerce",
   "version": "1.0.0",
-  "description": "A simple content manangement system",
+  "description": "A simple e-commerce system",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
