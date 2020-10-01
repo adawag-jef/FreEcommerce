@@ -1,16 +1,16 @@
 <template>
   <div class="w-full h-screen flex">
     <img
-      src="https://images.unsplash.com/photo-1540569876033-6e5d046a1d77?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+      src="https://images.unsplash.com/photo-1587304189289-8701c98d53bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
       alt="background"
-      class="object-cover object-center h-screen w-7/12"
+      class="object-cover object-center lg:h-screen lg:w-7/12 hidden lg:block"
     />
     <form
       @submit.prevent="submitLogin"
-      class="bg-white flex flex-col justify-center items-center w-5/12 shadow-lg"
+      class="bg-white flex flex-col justify-center items-center lg:w-5/12 w-full shadow-lg"
     >
       <h1 class="text-3xl font-bold text-green-500 mb-2">LOGIN</h1>
-      <div class="w-1/2 text-center">
+      <div class="w-3/4  lg:w-1/2 text-center">
         <input
           v-model="username"
           type="text"
@@ -54,7 +54,7 @@ export default {
           password: this.password,
         });
         if (success) {
-          this.$router.push("/admin/dashboard");
+          this.$router.push("/admin");
         }
       } catch (error) {
         console.log(error);

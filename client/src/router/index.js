@@ -104,7 +104,7 @@ router.beforeEach((to, from, next) => {
   } else {
     if (to.fullPath === "/login") {
       if (store.getters["auth/isAuthenticated"]) {
-        next("/admin/dashboard");
+        next("/admin");
       }
     }
     next();
