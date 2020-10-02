@@ -27,6 +27,11 @@ router
     validateDto(categoryDto),
     unique(Category, "name"),
     CategoryController.editCategory
+  )
+  .delete(
+    auth.userAuthenticate,
+    auth.isAdmin,
+    CategoryController.deleteCategory
   );
 
 module.exports = router;
