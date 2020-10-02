@@ -21,11 +21,14 @@ export default {
     },
     UPDATE_CATEGORY(state, category) {
       state.categories = state.categories.map((item) => {
-        if (item._id == category._id) {
+        if (item._id === category._id) {
           return category;
         }
         return item;
       });
+    },
+    DELETE_CATEGORY(state, id) {
+      state.categories = state.categories.filter((item) => item._id !== id);
     },
   },
   actions: {
@@ -49,6 +52,15 @@ export default {
       try {
         const response = await categoryApi.updateCategory({ id, category });
         ctx.commit("UPDATE_CATEGORY", response.data);
+        return true;
+      } catch (error) {
+        throw error.response.data.error;
+      }
+    },
+    async deleteCategory(ctx, id) {
+      try {
+        ctx.commit("DELETE_CATEGORY", id);
+        await categoryApi.deleteCategory(id);
         return true;
       } catch (error) {
         throw error.response.data.error;

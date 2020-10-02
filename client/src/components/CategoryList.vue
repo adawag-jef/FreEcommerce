@@ -4,7 +4,7 @@
       <div
         class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200"
       >
-        <table class="min-w-full">
+        <table class="min-w-full" v-if="categories.length">
           <thead>
             <tr>
               <th
@@ -89,8 +89,13 @@
               >
                 <a
                   @click.prevent="openModal(category)"
-                  class="text-green-600 hover:text-green-900 cursor-pointer"
+                  class="text-green-600 hover:text-green-900 cursor-pointer mr-2"
                   >Edit</a
+                >
+                <a
+                  @click.prevent="deleteCategory(category._id)"
+                  class="text-red-600 hover:text-red-900 cursor-pointer"
+                  >Delete</a
                 >
 
                 <!--  -->
@@ -98,6 +103,14 @@
             </tr>
           </tbody>
         </table>
+        <div
+          v-else
+          class="bg-orange-400 border-l-4 border-orange-700 text-white p-4"
+          role="alert"
+        >
+          <p class="font-bold">Oooppss!</p>
+          <p>Looks like you don't have any categories please add one😊</p>
+        </div>
       </div>
     </div>
     <FormModal
@@ -190,6 +203,16 @@ export default {
       this.category.description = category.description;
       this.currentId = category._id;
       this.isOpen = true;
+    },
+    async deleteCategory(id) {
+      try {
+        const res = await this.$store.dispatch("category/deleteCategory", id);
+        if (res) {
+          this.$toasted.success("Successfull deleted.");
+        }
+      } catch (error) {
+        this.$toasted.error(error.message);
+      }
     },
     onCloseRequest() {
       this.isOpen = false;

@@ -16,4 +16,7 @@ export default {
   updateCategory: ({ id, category }) => {
     return client.put(`/api/category/${id}`, category);
   },
+  deleteCategory: (id) => {
+    return client.delete(`/api/category/${id}`);
+  },
 };
