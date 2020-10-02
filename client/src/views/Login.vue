@@ -57,7 +57,7 @@ export default {
           this.$router.push("/admin");
         }
       } catch (error) {
-        console.log(error);
+        this.$toasted.error(error.message);
       }
     },
   },

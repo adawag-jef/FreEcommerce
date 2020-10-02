@@ -1,4 +1,5 @@
 import authApi from "../api/authApi";
+import router from "../router";
 
 export default {
   namespaced: true,
@@ -37,10 +38,10 @@ export default {
         ctx.commit("SET_TOKEN", res.data.token);
         ctx.commit("SET_IS_AUTHENTICATED", true);
         ctx.commit("SET_CURRENT_USER", res.data.user);
+        ctx.commit("SET_ERROR");
         return res.data.success;
       } catch (error) {
-        debugger;
-        console.log(error);
+        throw new Error(error.response.data.msg);
       }
     },
 
@@ -64,6 +65,9 @@ export default {
       ctx.commit("REMOVE_TOKEN");
       ctx.commit("SET_IS_AUTHENTICATED", false);
       ctx.commit("SET_CURRENT_USER", null);
+      if (router.currentRoute.fullPath !== "/login") {
+        router.push("/login");
+      }
     },
   },
 };

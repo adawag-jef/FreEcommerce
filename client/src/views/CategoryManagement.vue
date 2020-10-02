@@ -115,7 +115,9 @@ export default {
           "category/createCategory",
           this.category
         );
+
         this.isOpen = false;
+        this.$toasted.success("Category created.");
       } catch (error) {
         this.errors = error;
       }
