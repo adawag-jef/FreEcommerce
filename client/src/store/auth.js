@@ -38,7 +38,6 @@ export default {
         ctx.commit("SET_TOKEN", res.data.token);
         ctx.commit("SET_IS_AUTHENTICATED", true);
         ctx.commit("SET_CURRENT_USER", res.data.user);
-        ctx.commit("SET_ERROR");
         return res.data.success;
       } catch (error) {
         throw new Error(error.response.data.msg);
