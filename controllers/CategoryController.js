@@ -1,6 +1,6 @@
 const Category = require("../models/Category");
 
-const CategoryController = {
+class CategoryController {
   async listCategories(req, res) {
     try {
       const categories = await Category.find({})
@@ -11,7 +11,7 @@ const CategoryController = {
     } catch (error) {
       res.status(500).json({ success: false });
     }
-  },
+  }
 
   async createCategory(req, res) {
     try {
@@ -30,7 +30,7 @@ const CategoryController = {
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });
     }
-  },
-};
+  }
+}
 
-module.exports = CategoryController;
+module.exports = new CategoryController();

@@ -4,6 +4,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
+const apiErrorHandler = require("./error/api-error-handler");
 const app = express();
 
 const PORT = process.env.PORT || 5000;
@@ -31,6 +32,9 @@ app.use(passport.initialize());
 // routes
 app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/category", require("./routes/categoryRoute"));
+
+// error handler
+app.use(apiErrorHandler);
 
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {

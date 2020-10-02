@@ -3,17 +3,20 @@ const router = express.Router();
 
 const CategoryController = require("../controllers/CategoryController");
 const auth = require("../utilities/auth");
-
-// router.get(
-//   "/",
-//   auth.userAuthenticate,
-//   auth.isAdmin,
-//   CategoryController.listCategories
-// );
+const categoryDto = require("../dto/category");
+const Category = require("../models/Category");
+const validateDto = require("../middleware/validate-dto");
+const unique = require("../middleware/unique");
 
 router
   .route("/")
   .get(auth.userAuthenticate, auth.isAdmin, CategoryController.listCategories)
-  .post(auth.userAuthenticate, auth.isAdmin, CategoryController.createCategory);
+  .post(
+    auth.userAuthenticate,
+    auth.isAdmin,
+    validateDto(categoryDto),
+    unique(Category, "name"),
+    CategoryController.createCategory
+  );
 
 module.exports = router;

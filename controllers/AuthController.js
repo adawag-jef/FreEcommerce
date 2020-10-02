@@ -1,36 +1,29 @@
 const jwt = require("jsonwebtoken");
 
 let User = require("../models/User");
+const ApiError = require("../error/api-error");
 
-const AuthController = {
+class AuthController {
   async getAllUsers(req, res, next) {
     const users = await User.find({}).select("-password");
     return res.status(200).json({ users });
-  },
+  }
 
-  register(req, res, next) {
-    if (!req.body.username || !req.body.email || !req.body.password) {
-      res.json({
-        success: false,
-        msg: "Please pass username, email and password.",
-      });
-    } else {
-      var newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        role: "user",
-      });
-      // save the user
-      newUser.save(function (err) {
-        if (err) {
-          console.log(err.message);
-          return res.json({ success: false, msg: "Username already exists." });
-        }
-        res.json({ success: true, msg: "Successful created new user." });
-      });
+  async register(req, res, next) {
+    const newUser = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      role: "user",
+    });
+    // save the user
+    try {
+      const savedUser = await newUser.save();
+      return savedUser;
+    } catch (error) {
+      next(error);
     }
-  },
+  }
 
   async logIn(req, res, next) {
     const user = await User.findOne({ username: req.body.username });
@@ -67,7 +60,7 @@ const AuthController = {
         }
       });
     }
-  },
+  }
 
   // logOut(req, res, next) {
   //   req.logout();
@@ -76,7 +69,7 @@ const AuthController = {
 
   profile(req, res, next) {
     return res.status(200).send({ success: true, msg: req.user });
-  },
+  }
 
   current(req, res, next) {
     return res.status(200).json({
@@ -87,7 +80,7 @@ const AuthController = {
         role: req.user.role,
       },
     });
-  },
-};
+  }
+}
 
-module.exports = AuthController;
+module.exports = new AuthController();

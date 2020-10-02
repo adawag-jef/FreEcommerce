@@ -3,9 +3,18 @@ const router = express.Router();
 
 const auth = require("../utilities/auth");
 const AuthController = require("../controllers/AuthController");
+const userDto = require("../dto/user");
+const User = require("../models/User");
+const validateDto = require("../middleware/validate-dto");
+const unique = require("../middleware/unique");
 
 router.get("/", AuthController.getAllUsers);
-router.post("/register", AuthController.register);
+router.post(
+  "/register",
+  validateDto(userDto),
+  unique(User, "username"),
+  AuthController.register
+);
 router.post("/login", AuthController.logIn);
 router.get("/user", auth.userAuthenticate, AuthController.current);
 // router.get("/logout", AuthController.logOut);
