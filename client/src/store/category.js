@@ -19,6 +19,14 @@ export default {
     ADD_CATEGORY_TO_LIST(state, category) {
       state.categories = [category, ...state.categories];
     },
+    UPDATE_CATEGORY(state, category) {
+      state.categories = state.categories.map((item) => {
+        if (item._id == category._id) {
+          return category;
+        }
+        return item;
+      });
+    },
   },
   actions: {
     async listCategories(ctx, payload) {
@@ -32,6 +40,15 @@ export default {
       try {
         const response = await categoryApi.postCategory(category);
         ctx.commit("ADD_CATEGORY_TO_LIST", response.data);
+        return true;
+      } catch (error) {
+        throw error.response.data.error;
+      }
+    },
+    async updateCategory(ctx, { id, category }) {
+      try {
+        const response = await categoryApi.updateCategory({ id, category });
+        ctx.commit("UPDATE_CATEGORY", response.data);
         return true;
       } catch (error) {
         throw error.response.data.error;

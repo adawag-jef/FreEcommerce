@@ -13,4 +13,7 @@ export default {
   postCategory: (category) => {
     return client.post("/api/category", category);
   },
+  updateCategory: ({ id, category }) => {
+    return client.put(`/api/category/${id}`, category);
+  },
 };

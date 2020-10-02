@@ -6,6 +6,7 @@ class CategoryController {
       const categories = await Category.find({})
         .sort({ createdAt: "desc" })
         .populate("createdBy", "username id role")
+        .populate("updatedBy", "username id role")
         .exec();
       res.status(200).json(categories);
     } catch (error) {
