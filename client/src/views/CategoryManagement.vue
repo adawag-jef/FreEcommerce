@@ -29,16 +29,30 @@
             name="name"
             placeholder="Category Name"
             autocomplete="off"
-            class="shadow-md border w-full h-10 px-3 py-2 text-green-500 focus:outline-none focus:border-green-500 mb-3 rounded"
+            :class="{ 'border-red-500': errors.name }"
+            class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
           />
+          <span
+            v-if="errors.name"
+            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          >
+            {{ errors.name }}
+          </span>
           <textarea
             v-model="category.description"
             style="resize: none"
             type="text"
             name="description"
             placeholder="Category Description"
-            class="shadow-md border w-full h-20 px-3 py-2 text-green-500 focus:outline-none focus:border-green-500 mb-3 rounded"
+            :class="{ 'border-red-500': errors.description }"
+            class="shadow-md border w-full h-20 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
           ></textarea>
+          <span
+            v-if="errors.description"
+            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          >
+            {{ errors.description }}
+          </span>
         </template>
         <template slot="action">
           <div class="flex justify-end">
@@ -71,6 +85,7 @@ export default {
   },
   data() {
     return {
+      errors: {},
       isOpen: false,
       isSubmitting: false,
       category: {
@@ -88,15 +103,30 @@ export default {
   methods: {
     onCloseRequest() {
       this.isOpen = false;
+      this.category = {
+        name: "",
+        description: "",
+      };
+      this.errors = {};
     },
     async submit(e) {
-      const response = await this.$store.dispatch(
-        "category/createCategory",
-        this.category
-      );
-      if (response) {
+      try {
+        const res = await this.$store.dispatch(
+          "category/createCategory",
+          this.category
+        );
         this.isOpen = false;
+      } catch (error) {
+        this.errors = error;
       }
+
+      // const response = await this.$store.dispatch(
+      //   "category/createCategory",
+      //   this.category
+      // );
+      // if (response) {
+      //   this.isOpen = false;
+      // }
     },
   },
 };

@@ -9,12 +9,10 @@ function validateDto(schema) {
       req.body = validatedBody;
       next();
     } catch (error) {
-      const errResponse = error.inner.map((err) => {
-        return {
-          field: err.path,
-          error_message: err.message,
-        };
-      });
+      const errResponse = error.inner.reduce(function (result, item, index) {
+        return { ...result, [item.path]: item.message };
+      }, {});
+
       next(ApiError.badRequest(errResponse));
     }
   };

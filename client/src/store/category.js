@@ -34,7 +34,7 @@ export default {
         ctx.commit("ADD_CATEGORY_TO_LIST", response.data);
         return true;
       } catch (error) {
-        return false;
+        throw error.response.data.error;
       }
     },
   },
