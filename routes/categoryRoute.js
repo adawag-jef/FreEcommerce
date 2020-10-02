@@ -19,4 +19,14 @@ router
     CategoryController.createCategory
   );
 
+router
+  .route("/:id")
+  .put(
+    auth.userAuthenticate,
+    auth.isAdmin,
+    validateDto(categoryDto),
+    unique(Category, "name"),
+    CategoryController.editCategory
+  );
+
 module.exports = router;
