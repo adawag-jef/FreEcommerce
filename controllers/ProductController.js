@@ -1,6 +1,7 @@
 const path = require("path");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
+const ApiError = require("../error/api-error");
 
 class ProductController {
   async listProducts(req, res, error) {
@@ -20,9 +21,6 @@ class ProductController {
     try {
       const { name, description, price } = req.body;
       let categoryArray = req.body.category.split(",");
-      if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).send("No files were uploaded.");
-      }
 
       // The name of the input field (i.e. "mainPhoto") is used to retrieve the uploaded file
       let mainPhoto = req.files.mainPhoto;
