@@ -10,7 +10,8 @@ function validateDto(schema) {
       next();
     } catch (error) {
       const errResponse = error.inner.reduce(function (result, item, index) {
-        return { ...result, [item.path]: item.message };
+        const key = item.path.split(".")[0];
+        return { ...result, [key]: item.message };
       }, {});
 
       next(ApiError.badRequest(errResponse));

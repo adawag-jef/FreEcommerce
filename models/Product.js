@@ -18,19 +18,23 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    secondaryPhoto: {
-      type: String,
-    },
-    tertiaryPhoto: {
-      type: String,
-    },
+    // secondaryPhoto: {
+    //   type: String,
+    // },
+    // tertiaryPhoto: {
+    //   type: String,
+    // },
     category: {
       type: [mongoose.Types.ObjectId],
-      ref: "category",
+      ref: "Category",
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: "user",
+      ref: "User",
+    },
+    updatedBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }

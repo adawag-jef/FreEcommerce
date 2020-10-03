@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const passport = require("passport");
 const mongoose = require("mongoose");
+const fileUpload = require("express-fileupload");
 const path = require("path");
 const cors = require("cors");
 const apiErrorHandler = require("./error/api-error-handler");
@@ -28,11 +29,19 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(
+  fileUpload({
+    createParentPath: true,
+    safeFileNames: true,
+    preserveExtension: true,
+  })
+);
 app.use(passport.initialize());
 
 // routes
 app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/category", require("./routes/categoryRoute"));
+app.use("/api/product", require("./routes/productRoute"));
 
 // error handler
 app.use(apiErrorHandler);
