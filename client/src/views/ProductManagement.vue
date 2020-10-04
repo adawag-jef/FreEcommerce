@@ -27,7 +27,7 @@
             v-model="product.name"
             type="text"
             name="name"
-            placeholder="Category Name"
+            placeholder="Product Name"
             autocomplete="off"
             :class="{ 'border-red-500': errors.name }"
             class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
@@ -40,9 +40,10 @@
           </span>
           <input
             v-model="product.price"
-            type="text"
+            type="number"
+            step=".01"
             name="price"
-            placeholder="Category price"
+            placeholder="Product price"
             autocomplete="off"
             :class="{ 'border-red-500': errors.price }"
             class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
