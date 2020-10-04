@@ -54,22 +54,12 @@
             {{ errors.price }}
           </span>
 
-          <select
-            v-model="product.category"
-            multiple
-            :class="{ 'border-red-500': errors.category }"
-            class="shadow-md border w-full h-32 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
-          >
-            <option v-for="cat in categories" :key="cat._id" :value="cat._id">{{
-              cat.name
-            }}</option>
-          </select>
-          <span
-            v-if="errors.category"
-            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-          >
-            {{ errors.category }}
-          </span>
+          <SelectField
+            :options="categories"
+            :error="errors.category"
+            :placeholder="'Category'"
+            @change="handleCategorySelect"
+          />
 
           <textarea
             v-model="product.description"
@@ -127,10 +117,12 @@
 import { mapGetters } from "vuex";
 import ProductList from "../components/ProductList";
 import FormModal from "../components/FormModal";
+import SelectField from "../components/SelectField";
 export default {
   components: {
     ProductList,
     FormModal,
+    SelectField,
   },
   data() {
     return {
@@ -158,6 +150,9 @@ export default {
   },
 
   methods: {
+    handleCategorySelect(selected) {
+      this.product.category = selected.map((item) => item._id);
+    },
     handlePhotoChange(event) {
       this.product.mainPhoto = event.target.files[0];
     },
