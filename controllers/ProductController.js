@@ -1,13 +1,14 @@
 const path = require("path");
+const fs = require("fs");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
-const ApiError = require("../error/api-error");
 
 class ProductController {
   async listProducts(req, res, error) {
     try {
       const products = await Product.find({})
         .sort({ createdAt: "desc" })
+        .populate({ path: "category", model: Category, select: "name" })
         .populate("createdBy", "username id role")
         .populate("updatedBy", "username id role")
         .exec();
@@ -38,7 +39,7 @@ class ProductController {
         process.env.UPLOAD_DIR,
         fileName
       );
-      const filePath = `uploads/${fileName}`;
+      const filePath = `/uploads/${fileName}`;
 
       await mainPhoto.mv(fileStoragePath);
       const savedProduct = await Product.create({
@@ -83,14 +84,31 @@ class ProductController {
   //     }
   //   }
 
-  //   async deleteCategory(req, res, next) {
-  //     try {
-  //       await Category.deleteOne({ _id: req.params.id });
-  //       res.status(200).json({ success: true, msg: "Category deleted." });
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   }
+  async deleteProduct(req, res, next) {
+    try {
+      const product_id = req.params.id;
+      const productToBeDeleted = await Product.findById({ _id: product_id });
+      if (productToBeDeleted) {
+        const fileStoragePath = path.join(
+          __dirname,
+          "..",
+          "client/public",
+          productToBeDeleted.mainPhoto
+        );
+        console.log(fileStoragePath);
+        fs.unlink(fileStoragePath, async (err) => {
+          if (err) {
+            next(err);
+          } else {
+            await Product.findOneAndDelete({ _id: product_id });
+            res.status(204).json({ success: true, msg: "Product deleted." });
+          }
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new ProductController();

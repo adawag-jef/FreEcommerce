@@ -26,6 +26,7 @@ db.once("open", function () {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/dist"));
 }
+app.use("/uploads", express.static("client/uploads"));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

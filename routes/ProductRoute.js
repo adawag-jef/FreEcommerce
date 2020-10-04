@@ -20,4 +20,15 @@ router
     ProductController.createProduct
   );
 
+router
+  .route("/:id")
+  // .put(
+  //   auth.userAuthenticate,
+  //   auth.isAdmin,
+  //   validateDto(categoryDto),
+  //   unique(Category, "name"),
+  //   CategoryController.editCategory
+  // )
+  .delete(auth.userAuthenticate, auth.isAdmin, ProductController.deleteProduct);
+
 module.exports = router;
