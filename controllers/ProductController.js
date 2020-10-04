@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
+const fileUpload = require("../utilities/fileUpload");
 
 class ProductController {
   async listProducts(req, res, error) {
@@ -22,26 +23,7 @@ class ProductController {
     try {
       const { name, description, price } = req.body;
       let categoryArray = req.body.category.split(",");
-
-      // The name of the input field (i.e. "mainPhoto") is used to retrieve the uploaded file
-      let mainPhoto = req.files.mainPhoto;
-      let fileName =
-        mainPhoto.name.split(".")[0] +
-        "_" +
-        Date.now() +
-        "." +
-        mainPhoto.name.split(".")[1];
-
-      // Use the mv() method to place the file somewhere on your server
-      const fileStoragePath = path.join(
-        __dirname,
-        "..",
-        process.env.UPLOAD_DIR,
-        fileName
-      );
-      const filePath = `/uploads/${fileName}`;
-
-      await mainPhoto.mv(fileStoragePath);
+      const filePath = await fileUpload(req.files, "mainPhoto");
       const savedProduct = await Product.create({
         name,
         description,
@@ -63,26 +45,69 @@ class ProductController {
     }
   }
 
-  //   async editCategory(req, res, next) {
-  //     try {
-  //       const updatedBody = { ...req.body, updatedBy: req.user };
-  //       const categoryId = req.params.id;
+  async editProduct(req, res, next) {
+    try {
+      const product_id = req.params.id;
+      const productToBeDeleted = await Product.findById({ _id: product_id });
+      if (req.files) {
+        if (productToBeDeleted) {
+          const fileStoragePath = path.join(
+            __dirname,
+            "..",
+            "client/public",
+            productToBeDeleted.mainPhoto
+          );
 
-  //       const updatedCategory = await Category.findOneAndUpdate(
-  //         { _id: categoryId },
-  //         updatedBody
-  //       );
+          fs.unlink(fileStoragePath, async (err) => {
+            if (err) {
+              next(err);
+            } else {
+              const { name, description, price } = req.body;
+              let categoryArray = req.body.category.split(",");
+              const filePath = await fileUpload(req.files, "mainPhoto");
 
-  //       const category = await Category.findById(updatedCategory._id)
-  //         .populate("createdBy", "username id role")
-  //         .populate("updatedBy", "username id role")
-  //         .exec();
+              const updatedProduct = await Product.findOneAndUpdate(
+                { _id: product_id },
+                {
+                  name,
+                  description,
+                  price,
+                  createdBy: productToBeDeleted.createdBy,
+                  mainPhoto: filePath,
+                  category: categoryArray,
+                  updatedBy: req.user,
+                }
+              );
 
-  //       res.status(201).json(category);
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   }
+              const _product = await Product.findById(updatedProduct._id)
+                .populate({ path: "category", model: Category, select: "name" })
+                .populate("createdBy", "username id role")
+                .populate("updatedBy", "username id role")
+                .exec();
+
+              res.status(200).json(_product);
+            }
+          });
+        }
+      } else {
+        const updatedBody = { ...req.body, updatedBy: req.user };
+        updatedBody.category = req.body.category.split(",");
+        updatedBody.createdBy = productToBeDeleted.createdBy;
+        const updatedProduct = await Product.findOneAndUpdate(
+          { _id: product_id },
+          updatedBody
+        );
+        const _product = await Product.findById(updatedProduct._id)
+          .populate({ path: "category", model: Category, select: "name" })
+          .populate("createdBy", "username id role")
+          .populate("updatedBy", "username id role")
+          .exec();
+        res.status(200).json(_product);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async deleteProduct(req, res, next) {
     try {

@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col mt-8">
+    <!-- <pre>{{products}}</pre> -->
     <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <div
         class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200"
@@ -135,7 +136,7 @@
         </div>
       </div>
     </div>
-    <!-- <FormModal
+    <FormModal
       :trigger="isOpen"
       :onCloseRequest="onCloseRequest"
       :onSubmitRequest="submit"
@@ -143,16 +144,16 @@
       <template slot="header">
         <div>
           <i class="fas fa-exclamation-circle text-blue-500"></i>
-          <span class="font-bold text-gray-700 text-lg">Update Category</span>
+          <span class="font-bold text-gray-700 text-lg">Update Product</span>
         </div>
       </template>
 
       <template slot="body">
         <input
-          v-model="category.name"
+          v-model="product.name"
           type="text"
           name="name"
-          placeholder="Category Name"
+          placeholder="Product Name"
           autocomplete="off"
           :class="{ 'border-red-500': errors.name }"
           class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
@@ -163,12 +164,37 @@
         >
           {{ errors.name }}
         </span>
+        <input
+          v-model="product.price"
+          type="number"
+          step=".01"
+          name="price"
+          placeholder="Product price"
+          autocomplete="off"
+          :class="{ 'border-red-500': errors.price }"
+          class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
+        />
+        <span
+          v-if="errors.price"
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+        >
+          {{ errors.price }}
+        </span>
+
+        <SelectField
+          :options="categories"
+          :error="errors.category"
+          :preSelected="product.category"
+          :placeholder="'Category'"
+          @change="handleCategorySelect"
+        />
+
         <textarea
-          v-model="category.description"
+          v-model="product.description"
           style="resize: none"
           type="text"
           name="description"
-          placeholder="Category Description"
+          placeholder="Product Description"
           :class="{ 'border-red-500': errors.description }"
           class="shadow-md border w-full h-20 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
         ></textarea>
@@ -177,6 +203,21 @@
           class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
         >
           {{ errors.description }}
+        </span>
+
+        <input
+          @change="handlePhotoChange($event)"
+          type="file"
+          name="Photo"
+          placeholder="Main Photo"
+          :class="{ 'border-red-500': errors.mainPhoto }"
+          class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
+        />
+        <span
+          v-if="errors.mainPhoto"
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+        >
+          {{ errors.mainPhoto }}
         </span>
       </template>
       <template slot="action">
@@ -193,12 +234,13 @@
           </button>
         </div>
       </template>
-    </FormModal> -->
+    </FormModal>
   </div>
 </template>
 
 <script>
 import FormModal from "./FormModal";
+import SelectField from "../components/SelectField";
 export default {
   props: {
     categories: { type: Array },
@@ -206,6 +248,7 @@ export default {
   },
   components: {
     FormModal,
+    SelectField,
   },
 
   data() {
@@ -214,17 +257,31 @@ export default {
       isOpen: false,
       isSubmitting: false,
       currentId: "",
-      category: {
+      product: {
         name: "",
         description: "",
+        price: "",
+        category: [],
+        createdBy: "",
+        mainPhoto: null,
       },
     };
   },
   methods: {
-    openModal(category) {
-      this.category.name = category.name;
-      this.category.description = category.description;
-      this.currentId = category._id;
+    handleCategorySelect(selected) {
+      this.product.category = selected.map((item) => item._id);
+    },
+    handlePhotoChange(event) {
+      this.product.mainPhoto = event.target.files[0];
+    },
+    openModal(product) {
+      this.product.name = product.name;
+      this.product.description = product.description;
+      this.product.price = product.price;
+      this.product.category = product.category;
+      this.product.createdBy = product.createdBy;
+      this.product.mainPhoto = product.mainPhoto;
+      this.currentId = product._id;
       this.isOpen = true;
     },
     async deleteProduct(id) {
@@ -239,22 +296,25 @@ export default {
     },
     onCloseRequest() {
       this.isOpen = false;
-      this.category = {
+      this.product = {
         name: "",
         description: "",
+        price: "",
+        category: [],
+        mainPhoto: null,
       };
       this.currentId = "";
       this.errors = {};
     },
     async submit(e) {
       try {
-        const res = await this.$store.dispatch("category/updateCategory", {
+        const res = await this.$store.dispatch("product/updateProduct", {
           id: this.currentId,
-          category: this.category,
+          product: this.product,
         });
 
         this.isOpen = false;
-        this.$toasted.success("Category updated.");
+        this.$toasted.success("Product updated.");
       } catch (error) {
         this.errors = error;
       }

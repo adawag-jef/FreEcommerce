@@ -14,9 +14,10 @@ export default {
     const config = { headers: { "Content-Type": "multipart/form-data" } };
     return client.post("/api/product", product, config);
   },
-  //   updateCategory: ({ id, category }) => {
-  //     return client.put(`/api/category/${id}`, category);
-  //   },
+  updateProduct: ({ id, product }) => {
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    return client.put(`/api/product/${id}`, product, config);
+  },
   deleteProduct: (id) => {
     return client.delete(`/api/product/${id}`);
   },

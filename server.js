@@ -10,13 +10,15 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+global.APP_ROOT = path.resolve(__dirname);
+
 app.use(cors());
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-  useFindAndModify: true,
+  useFindAndModify: false,
 });
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -44,13 +46,12 @@ app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/category", require("./routes/categoryRoute"));
 app.use("/api/product", require("./routes/productRoute"));
 
-// error handler
-app.use(apiErrorHandler);
-
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/client/dist/index.html"));
   });
+  // error handler
+  app.use(apiErrorHandler);
 }
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
