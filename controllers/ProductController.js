@@ -1,7 +1,10 @@
+const mongoose = require("mongoose");
 const path = require("path");
 const fs = require("fs");
-const Product = require("../models/Product");
-const Category = require("../models/Category");
+// const Product = require("../models/Product");
+// const Category = require("../models/Category");
+const Category = mongoose.model("Category");
+const Product = mongoose.model("Product");
 const fileUpload = require("../utilities/fileUpload");
 
 class ProductController {
@@ -125,7 +128,7 @@ class ProductController {
           if (err) {
             next(err);
           } else {
-            await Product.findOneAndDelete({ _id: product_id });
+            await Product.deleteOne({ _id: product_id });
             res.status(204).json({ success: true, msg: "Product deleted." });
           }
         });

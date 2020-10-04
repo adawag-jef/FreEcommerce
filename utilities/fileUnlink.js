@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-module.exports = function (filePath) {
+module.exports = function (filePath, cb) {
   try {
     const fileStoragePath = path.join(
       __dirname,
@@ -8,12 +8,7 @@ module.exports = function (filePath) {
       "client/public",
       filePath
     );
-    fs.unlink(fileStoragePath, (err) => {
-      if (err) {
-        // console.log(err);
-        throw err;
-      }
-    });
+    fs.unlink(fileStoragePath, cb);
   } catch (error) {
     throw error;
   }

@@ -8,6 +8,10 @@ const cors = require("cors");
 const apiErrorHandler = require("./error/api-error-handler");
 const app = express();
 
+require("./models/User");
+require("./models/Category");
+require("./models/Product");
+
 const PORT = process.env.PORT || 5000;
 
 global.APP_ROOT = path.resolve(__dirname);

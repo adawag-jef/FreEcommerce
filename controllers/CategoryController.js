@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
-const Category = require("../models/Category");
-const Product = require("../models/Product");
-const fileUnlink = require("../utilities/fileUnlink");
+// const Category = require("../models/Category");
+// const Product = require("../models/Product");
+const Category = mongoose.model("Category");
+// const Product = mongoose.model("Product");
+// const fileUnlink = require("../utilities/fileUnlink");
 
 class CategoryController {
   async listCategories(req, res, error) {
@@ -61,27 +63,6 @@ class CategoryController {
 
   async deleteCategory(req, res, next) {
     try {
-      const category_id = mongoose.Types.ObjectId(req.params.id);
-
-      Product.find({ category: { $in: [category_id] } }).then((products) => {
-        console.log(products);
-        Promise.all(
-          products.map((product) => {
-            if (product.category.length > 1) {
-              return Product.findOneAndUpdate(
-                { _id: product._id },
-                { $pull: { category: category_id } },
-                { new: true }
-              );
-            } else {
-              // TODO: unlink image
-              fileUnlink(product.mainPhoto);
-              return Product.deleteOne({ _id: product._id });
-            }
-          })
-        );
-      });
-
       await Category.deleteOne({ _id: req.params.id });
       res.status(200).json({ success: true, msg: "Category deleted." });
     } catch (error) {

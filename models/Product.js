@@ -46,4 +46,10 @@ const ProductSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ProductSchema.pre("deleteOne", function (next) {
+  const product_id = this.getQuery()["_id"];
+  // perform other cascaded deletion
+  next();
+});
+
 module.exports = mongoose.model("Product", ProductSchema);
