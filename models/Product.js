@@ -24,10 +24,16 @@ const ProductSchema = new mongoose.Schema(
     // tertiaryPhoto: {
     //   type: String,
     // },
-    category: {
-      type: [mongoose.Types.ObjectId],
-      ref: "Category",
-    },
+    // category: {
+    //   type: [mongoose.Types.ObjectId],
+    //   ref: "Category",
+    // },
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

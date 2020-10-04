@@ -59,8 +59,8 @@ export default {
     },
     async deleteCategory(ctx, id) {
       try {
-        ctx.commit("DELETE_CATEGORY", id);
         await categoryApi.deleteCategory(id);
+        ctx.commit("DELETE_CATEGORY", id);
         return true;
       } catch (error) {
         throw error.response.data.error;
