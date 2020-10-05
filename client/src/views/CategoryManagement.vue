@@ -23,22 +23,14 @@
         </template>
 
         <template slot="body">
-          <input
-            v-model="category.name"
-            type="text"
-            name="name"
+          <InputTextField
+            :value="category.name"
+            @change="handleChange"
             placeholder="Category Name"
-            autocomplete="off"
-            :class="{ 'border-red-500': errors.name }"
-            class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
+            name="name"
+            :error="errors.name"
           />
-          <span
-            v-if="errors.name"
-            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-          >
-            {{ errors.name }}
-          </span>
-          <textarea
+          <!-- <textarea
             v-model="category.description"
             style="resize: none"
             type="text"
@@ -52,7 +44,14 @@
             class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
           >
             {{ errors.description }}
-          </span>
+          </span> -->
+          <TextAreaField
+            :value="category.description"
+            @change="handleChange"
+            placeholder="Category Description"
+            name="description"
+            :error="errors.description"
+          />
         </template>
         <template slot="action">
           <div class="flex justify-end">
@@ -78,10 +77,15 @@
 import { mapGetters } from "vuex";
 import CategoryList from "../components/CategoryList";
 import FormModal from "../components/FormModal";
+import InputTextField from "../components/inputs/InputTextField";
+import TextAreaField from "../components/inputs/TextAreaField";
+import category from "../store/category";
 export default {
   components: {
     CategoryList,
     FormModal,
+    InputTextField,
+    TextAreaField,
   },
   data() {
     return {
@@ -101,6 +105,9 @@ export default {
     this.$store.dispatch("category/listCategories");
   },
   methods: {
+    handleChange(e) {
+      this.category[e.target.name] = e.target.value;
+    },
     onCloseRequest() {
       this.isOpen = false;
       this.category = {

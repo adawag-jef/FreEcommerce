@@ -23,7 +23,7 @@
         </template>
 
         <template slot="body">
-          <input
+          <!-- <input
             v-model="product.name"
             type="text"
             name="name"
@@ -37,8 +37,15 @@
             class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
           >
             {{ errors.name }}
-          </span>
-          <input
+          </span> -->
+          <InputTextField
+            :value="product.name"
+            @change="handleChange"
+            placeholder="Product Name"
+            name="name"
+            :error="errors.name"
+          />
+          <!-- <input
             v-model="product.price"
             type="number"
             step=".01"
@@ -53,7 +60,16 @@
             class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
           >
             {{ errors.price }}
-          </span>
+          </span> -->
+          <InputTextField
+            :value="product.price"
+            @change="handleChange"
+            type="number"
+            step=".01"
+            placeholder="Product Price"
+            name="price"
+            :error="errors.price"
+          />
 
           <SelectField
             :options="categories"
@@ -62,7 +78,7 @@
             @change="handleCategorySelect"
           />
 
-          <textarea
+          <!-- <textarea
             v-model="product.description"
             style="resize: none"
             type="text"
@@ -76,7 +92,14 @@
             class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
           >
             {{ errors.description }}
-          </span>
+          </span> -->
+          <TextAreaField
+            :value="product.description"
+            @change="handleChange"
+            placeholder="Product Description"
+            name="description"
+            :error="errors.description"
+          />
 
           <input
             @change="handlePhotoChange($event)"
@@ -119,11 +142,15 @@ import { mapGetters } from "vuex";
 import ProductList from "../components/ProductList";
 import FormModal from "../components/FormModal";
 import SelectField from "../components/inputs/SelectField";
+import InputTextField from "../components/inputs/InputTextField";
+import TextAreaField from "../components/inputs/TextAreaField";
 export default {
   components: {
     ProductList,
     FormModal,
     SelectField,
+    InputTextField,
+    TextAreaField,
   },
   data() {
     return {
@@ -151,6 +178,9 @@ export default {
   },
 
   methods: {
+    handleChange(e) {
+      this.product[e.target.name] = e.target.value;
+    },
     handleCategorySelect(selected) {
       this.product.category = selected.map((item) => item._id);
     },

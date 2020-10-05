@@ -50,12 +50,12 @@ app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/category", require("./routes/categoryRoute"));
 app.use("/api/product", require("./routes/productRoute"));
 
+app.use(apiErrorHandler);
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/client/dist/index.html"));
   });
   // error handler
-  app.use(apiErrorHandler);
 }
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

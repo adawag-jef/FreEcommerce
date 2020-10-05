@@ -126,22 +126,21 @@
       </template>
 
       <template slot="body">
-        <input
-          v-model="category.name"
-          type="text"
-          name="name"
+        <InputTextField
+          :value="category.name"
+          @change="handleChange"
           placeholder="Category Name"
-          autocomplete="off"
-          :class="{ 'border-red-500': errors.name }"
-          class="shadow-md border w-full h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
+          name="name"
+          :error="errors.name"
         />
-        <span
-          v-if="errors.name"
-          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-        >
-          {{ errors.name }}
-        </span>
-        <textarea
+        <TextAreaField
+          :value="category.description"
+          @change="handleChange"
+          placeholder="Category Description"
+          name="description"
+          :error="errors.description"
+        />
+        <!-- <textarea
           v-model="category.description"
           style="resize: none"
           type="text"
@@ -155,7 +154,7 @@
           class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
         >
           {{ errors.description }}
-        </span>
+        </span> -->
       </template>
       <template slot="action">
         <div class="flex justify-end">
@@ -177,12 +176,16 @@
 
 <script>
 import FormModal from "./FormModal";
+import InputTextField from "../components/inputs/InputTextField";
+import TextAreaField from "../components/inputs/TextAreaField";
 export default {
   props: {
     categories: { type: Array },
   },
   components: {
     FormModal,
+    InputTextField,
+    TextAreaField,
   },
 
   data() {
@@ -198,6 +201,9 @@ export default {
     };
   },
   methods: {
+    handleChange(e) {
+      this.category[e.target.name] = e.target.value;
+    },
     openModal(category) {
       this.category.name = category.name;
       this.category.description = category.description;

@@ -103,7 +103,7 @@ export default {
     displayText: { type: String, default: "name" },
     error: { type: "" },
     placeholder: { type: "" },
-    preSelected: { type: Array, default: [] },
+    preSelected: { type: Array, default: () => [] },
   },
   data() {
     return {
