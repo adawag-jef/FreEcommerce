@@ -64,6 +64,7 @@ export default {
       ctx.commit("REMOVE_TOKEN");
       ctx.commit("SET_IS_AUTHENTICATED", false);
       ctx.commit("SET_CURRENT_USER", null);
+      sessionStorage.clear();
       if (router.currentRoute.fullPath !== "/login") {
         router.push("/login");
       }
