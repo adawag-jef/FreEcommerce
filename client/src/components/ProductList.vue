@@ -240,7 +240,7 @@
 
 <script>
 import FormModal from "./FormModal";
-import SelectField from "../components/SelectField";
+import SelectField from "../components/inputs/SelectField";
 export default {
   props: {
     categories: { type: Array },

@@ -118,7 +118,7 @@
 import { mapGetters } from "vuex";
 import ProductList from "../components/ProductList";
 import FormModal from "../components/FormModal";
-import SelectField from "../components/SelectField";
+import SelectField from "../components/inputs/SelectField";
 export default {
   components: {
     ProductList,
