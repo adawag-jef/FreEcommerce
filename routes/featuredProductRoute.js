@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
+
+const FeaturedProduct = mongoose.model("FeaturedProduct");
 
 const FeaturedProductController = require("../controllers/FeaturedProductController");
 const auth = require("../utilities/auth");
-const categoryDto = require("../dto/category");
-const Category = require("../models/Category");
+const featuredDto = require("../dto/featured");
 const validateDto = require("../middleware/validate-dto");
 const unique = require("../middleware/unique");
 
@@ -14,6 +16,12 @@ router
   .post(
     auth.userAuthenticate,
     auth.isAdmin,
+    validateDto(featuredDto),
+    unique(
+      FeaturedProduct,
+      "product_id",
+      "This product already exist in featured list."
+    ),
     FeaturedProductController.addProductToFeatured
   );
 

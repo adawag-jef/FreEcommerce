@@ -12,7 +12,7 @@ class FeaturedProductController {
     try {
       const products = await FeaturedProduct.find({})
         .sort({ createdAt: "desc" })
-        .populate({ path: "product", model: Product })
+        .populate("product_id")
         // .populate("createdBy", "username id role")
         // .populate("updatedBy", "username id role")
         .exec();
@@ -26,9 +26,9 @@ class FeaturedProductController {
     try {
       const { product_id } = req.body;
       const product = await Product.findById(product_id);
-      const featured = await FeaturedProduct.create({ product });
+      const featured = await FeaturedProduct.create({ product_id: product });
       const newFeatured = await FeaturedProduct.findById(featured._id)
-        .populate("product")
+        .populate("product_id")
         .exec();
       res.status(201).json(newFeatured);
     } catch (error) {

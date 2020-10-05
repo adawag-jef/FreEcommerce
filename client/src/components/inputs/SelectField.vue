@@ -8,25 +8,35 @@
             class="flex shadow-md border h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
           >
             <div class="flex flex-auto flex-wrap">
-              <span v-if="selected.length <= 0" class="text-gray-500">{{
-                placeholder
-              }}</span>
-              <div
-                v-for="item in selected"
-                :key="item[identifier]"
-                @click="removeSelected(item)"
-                class="flex justify-center mx-1 items-center font-medium px-2 bg-white rounded-full text-green-700 bg-green-100 border border-green-300 "
-              >
+              <template v-if="multi">
+                <span v-if="selected.length <= 0" class="text-gray-500">{{
+                  placeholder
+                }}</span>
                 <div
-                  class="text-xs font-normal leading-none max-w-full flex-initial"
+                  v-for="item in selected"
+                  :key="item[identifier]"
+                  @click="removeSelected(item)"
+                  class="flex justify-center mx-1 items-center font-medium px-2 bg-white rounded-full text-green-700 bg-green-100 border border-green-300 "
                 >
-                  {{ item[displayText] }}
-                </div>
-                <div class="flex flex-auto flex-row-reverse">
-                  <div>
-                    <i class="ml-1 far fa-times-circle"></i>
+                  <div
+                    class="text-xs font-normal leading-none max-w-full flex-initial"
+                  >
+                    {{ item[displayText] }}
+                  </div>
+                  <div class="flex flex-auto flex-row-reverse">
+                    <div>
+                      <i class="ml-1 far fa-times-circle"></i>
+                    </div>
                   </div>
                 </div>
+              </template>
+              <div v-else>
+                <span v-if="!single_selected.name" class="text-gray-500">{{
+                  placeholder
+                }}</span>
+                <span v-else class="text-gray-500">{{
+                  single_selected.name
+                }}</span>
               </div>
               <!-- <div class="flex-1">
                 <input
@@ -97,11 +107,12 @@ export default {
   props: {
     options: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     identifier: { type: String, default: "_id" },
     displayText: { type: String, default: "name" },
     error: { type: "" },
+    multi: { type: Boolean, default: false },
     placeholder: { type: "" },
     preSelected: { type: Array, default: () => [] },
   },
@@ -116,6 +127,7 @@ export default {
         // { id: 2, text: "Javascript", value: "javascript" },
         // { id: 3, text: "Python", value: "python" },
       ],
+      single_selected: {},
       isOpen: false,
     };
   },
@@ -129,11 +141,16 @@ export default {
       );
     },
     addSelected(item) {
-      if (this.isItemSelected(item)) {
-        return;
+      if (this.multi) {
+        if (this.isItemSelected(item)) {
+          return;
+        }
+        this.selected = [item, ...this.selected];
+        this.$emit("change", this.selected);
+      } else {
+        this.single_selected = item;
+        this.$emit("change", this.single_selected);
       }
-      this.selected = [item, ...this.selected];
-      this.$emit("change", this.selected);
     },
     removeSelected(item) {
       this.selected = this.selected.filter(

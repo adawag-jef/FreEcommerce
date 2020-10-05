@@ -75,6 +75,7 @@
             :options="categories"
             :error="errors.category"
             :placeholder="'Category'"
+            multi
             @change="handleCategorySelect"
           />
 
