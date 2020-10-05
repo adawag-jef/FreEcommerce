@@ -10,14 +10,19 @@ export default [
     component: () => import("../views/UserManagement"),
   },
   {
+    path: "categories",
+    name: "CategoryManagement",
+    component: () => import("../views/CategoryManagement"),
+  },
+  {
     path: "products",
     name: "ProductManagement",
     component: () => import("../views/ProductManagement"),
   },
   {
-    path: "categories",
-    name: "CategoryManagement",
-    component: () => import("../views/CategoryManagement"),
+    path: "site",
+    name: "SiteManagement",
+    component: () => import("../views/SiteManagement"),
   },
   {
     path: "transactions",
