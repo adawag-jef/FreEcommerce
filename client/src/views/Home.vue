@@ -110,6 +110,7 @@
               :style="`background-image: url(${featured.product_id.mainPhoto})`"
             >
               <button
+                @click="addToCart(featured.product_id)"
                 class="p-2 rounded-full bg-green-600 text-white mx-5 -mb-4 hover:bg-green-500 focus:outline-none focus:bg-green-500"
               >
                 <svg
@@ -271,7 +272,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
     ...mapGetters({
@@ -280,6 +281,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch("product/listFeaturedProducts");
+    this.$store.dispatch("product/listProducts");
+  },
+  methods: {
+    ...mapActions({ addToCart: "cart/addToCart" }),
   },
 };
 </script>
