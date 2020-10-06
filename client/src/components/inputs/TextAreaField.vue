@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div class="mx-1">
     <textarea
       :value="value"
       @change="handleChange"
@@ -16,7 +16,7 @@
     >
       {{ error }}
     </span>
-  </span>
+  </div>
 </template>
 
 <script>

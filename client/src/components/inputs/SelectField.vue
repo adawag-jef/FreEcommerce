@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full flex flex-col items-center h-auto mx-auto">
+  <div class="w-full flex flex-col items-center h-auto mx-1 ">
     <div class="w-full cursor-pointer" @click="isOpen = !isOpen">
       <div class="flex flex-col items-center relative">
-        <div class="w-full">
+        <div class="w-full mx-1">
           <div
             :class="{ 'border-red-500': error }"
-            class="flex shadow-md border h-10 px-3 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
+            class="flex shadow-md border h-10 px-2 mx-1 py-2 mt-3 text-green-500 focus:outline-none focus:border-green-500 rounded"
           >
             <div class="flex flex-auto flex-wrap">
               <template v-if="multi">
