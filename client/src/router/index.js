@@ -69,9 +69,46 @@ const router = new VueRouter({
   routes,
 });
 
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requireAuth)) {
+//     const token = localStorage.getItem("token");
+//     if (to.matched.some((record) => record.meta.isAdmin) && token) {
+//       if (store.getters["auth/getCurrentUser"].role !== "admin") {
+//         next("/");
+//       } else {
+//         next();
+//       }
+//     } else {
+//       next("/");
+//     }
+//   } else {
+//     // debugger;
+//     if (to.fullPath === "/login") {
+//       if (
+//         store.getters["auth/isAuthenticated"] &&
+//         store.getters["auth/getCurrentUser"].role === "admin"
+//       ) {
+//         next("/admin");
+//       }
+//       if (
+//         store.getters["auth/isAuthenticated"] &&
+//         store.getters["auth/getCurrentUser"].role === "user"
+//       ) {
+//         next("/");
+//       } else {
+//         if (!store.getters["auth/isAuthenticated"]) {
+//           next("/");
+//         }
+//         next();
+//       }
+//     }
+//     next();
+//   }
+// });
 router.beforeEach((to, from, next) => {
+  // debugger;
+  const token = localStorage.getItem("token");
   if (to.matched.some((record) => record.meta.requireAuth)) {
-    const token = localStorage.getItem("token");
     if (to.matched.some((record) => record.meta.isAdmin) && token) {
       if (store.getters["auth/getCurrentUser"].role !== "admin") {
         next("/");
@@ -79,20 +116,13 @@ router.beforeEach((to, from, next) => {
         next();
       }
     } else {
-      next("/login");
+      next("/");
     }
   } else {
-    if (to.fullPath === "/login") {
-      if (
-        store.getters["auth/isAuthenticated"] &&
-        store.getters["auth/getCurrentUser"].role === "admin"
-      ) {
+    if (to.fullPath === "/login" && token) {
+      if (store.getters["auth/getCurrentUser"].role === "admin") {
         next("/admin");
-      }
-      if (
-        store.getters["auth/isAuthenticated"] &&
-        store.getters["auth/getCurrentUser"].role === "user"
-      ) {
+      } else if (store.getters["auth/getCurrentUser"].role === "user") {
         next("/");
       } else {
         next();

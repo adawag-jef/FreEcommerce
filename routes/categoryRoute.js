@@ -10,7 +10,7 @@ const unique = require("../middleware/unique");
 
 router
   .route("/")
-  .get(auth.userAuthenticate, auth.isAdmin, CategoryController.listCategories)
+  .get(auth.userAuthenticate, CategoryController.listCategories)
   .post(
     auth.userAuthenticate,
     auth.isAdmin,

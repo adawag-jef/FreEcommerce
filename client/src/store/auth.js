@@ -66,7 +66,7 @@ export default {
       ctx.commit("SET_CURRENT_USER", null);
       sessionStorage.clear();
       if (router.currentRoute.fullPath !== "/login") {
-        router.push("/login");
+        router.push("/");
       }
     },
   },
