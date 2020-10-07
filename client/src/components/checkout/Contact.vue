@@ -10,7 +10,7 @@
     />
     <InputTextField
       :value="contact.email"
-      type="email"
+      type="text"
       @change="handleChange"
       placeholder="Email"
       name="email"
@@ -23,7 +23,7 @@
       name="country"
       :error="errors.country"
     />
-    <div class="flex justify-between">
+    <div class="md:flex md:justify-between">
       <InputTextField
         :value="contact.street"
         @change="handleChange"
@@ -40,7 +40,7 @@
       />
     </div>
 
-    <div class="flex justify-between">
+    <div class="md:flex md:justify-between">
       <InputTextField
         :value="contact.zip"
         @change="handleChange"

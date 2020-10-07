@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-1">
+  <div class="mx-1 w-full">
     <input
       :value="value"
       @change="handleChange"

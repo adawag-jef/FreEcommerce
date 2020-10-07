@@ -2,7 +2,7 @@ const yup = require("yup");
 
 module.exports = yup.object().shape({
   name: yup.string().trim().required(),
-  email: yup.string().trim().required(),
+  email: yup.string().email().trim().required(),
   country: yup.string().trim().required(),
   street: yup.string().trim().required(),
   city: yup.string().trim().required(),
