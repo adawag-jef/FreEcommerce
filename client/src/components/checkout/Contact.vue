@@ -81,9 +81,9 @@ export default {
       },
     };
   },
-  // mounted() {
-  //   this.$emit("change", this.contact);
-  // },
+  mounted() {
+    this.$emit("change", this.contact);
+  },
   methods: {
     handleChange(e) {
       this.contact[e.target.name] = e.target.value;

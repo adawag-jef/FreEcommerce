@@ -36,19 +36,21 @@
       </button>
     </div>
     <form class="mt-8 lg:w-3/4" @submit.prevent="submit">
-      <transition-group
-        tag="div"
+      <!-- <transition-group
+        tag="ul"
         enter-active-class="animate__animated animate__fadeInRight"
         leave-active-class="animate__animated animate__fadeOutLeft"
-      >
-        <div v-show="currentStep === 1" :key="1">
+      > -->
+      <ul>
+        <li v-show="currentStep === 1" :key="1">
           <Contact @change="mapContactValue" :errors="errors" />
-        </div>
-        <div v-show="currentStep === 2" :key="2">
+        </li>
+        <li v-show="currentStep === 2" :key="2">
           <Shipping @change="mapShippingValue" :errors="errors" />
-        </div>
-        <div v-show="currentStep === 3" :key="3"><Payment /></div>
-      </transition-group>
+        </li>
+        <li v-show="currentStep === 3" :key="3"><Payment /></li>
+      </ul>
+      <!-- </transition-group> -->
       <div class="flex items-center justify-between mt-8">
         <button
           @click.prevent="prevStep"

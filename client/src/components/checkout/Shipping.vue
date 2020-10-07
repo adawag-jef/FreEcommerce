@@ -79,9 +79,9 @@ export default {
       deliveryDate: newdate,
     };
   },
-  // mounted() {
-  //   this.$emit("change", this.delivery);
-  // },
+  mounted() {
+    this.$emit("change", this.delivery);
+  },
   methods: {
     handleChange(e) {
       this.delivery[e.target.name] = e.target.value;
