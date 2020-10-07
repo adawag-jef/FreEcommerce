@@ -11,7 +11,7 @@ const fileValidation = require("../middleware/file-validation");
 
 router
   .route("/")
-  .get(auth.userAuthenticate, ProductController.listProducts)
+  .get(ProductController.listProducts)
   .post(
     auth.userAuthenticate,
     auth.isAdmin,

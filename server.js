@@ -12,6 +12,8 @@ require("./models/User");
 require("./models/Category");
 require("./models/Product");
 require("./models/FeaturedProduct");
+require("./models/PurchasedProduct");
+require("./models/Transaction");
 
 const PORT = process.env.PORT || 5000;
 
@@ -51,6 +53,7 @@ app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/category", require("./routes/categoryRoute"));
 app.use("/api/product", require("./routes/productRoute"));
 app.use("/api/featured", require("./routes/featuredProductRoute"));
+app.use("/api/transaction", require("./routes/transactionRoute"));
 
 app.use(apiErrorHandler);
 if (process.env.NODE_ENV === "production") {
