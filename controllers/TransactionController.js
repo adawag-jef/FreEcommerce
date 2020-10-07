@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
-// const Category = require("../models/Category");
 const Product = require("../models/Product");
 const PurchasedProduct = require("../models/PurchasedProduct");
 const Transaction = mongoose.model("Transaction");
 const path = require("path");
 const fs = require("fs");
-// const Product = mongoose.model("Product");
-// const fileUnlink = require("../utilities/fileUnlink");
 
 class TransactionController {
   //   async listCategories(req, res, error) {
@@ -75,8 +72,7 @@ class TransactionController {
             process.env.UPLOAD_DIR,
             fileName
           );
-          const transactionImage = `${process.env.PUBLIC_DIR}/transaction/${fileName}`;
-          fs.copyFileSync(fileStoragePath, transactionImage);
+
           const prod = await PurchasedProduct.create({
             name: prd.name,
             description: prd.description,
@@ -84,6 +80,11 @@ class TransactionController {
             mainPhoto: `/transaction/${fileName}`,
             count: prd.count,
           });
+          const transactionImage = `${process.env.PUBLIC_DIR}/transaction/${fileName}`;
+          if (!fs.existsSync(`${process.env.PUBLIC_DIR}/transaction`)) {
+            fs.mkdirSync(`${process.env.PUBLIC_DIR}/transaction`);
+          }
+          fs.copyFileSync(fileStoragePath, transactionImage);
           return prod;
         })
       );

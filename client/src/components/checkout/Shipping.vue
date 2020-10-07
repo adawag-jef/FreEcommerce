@@ -8,7 +8,8 @@
             type="radio"
             class="form-radio h-5 w-5 text-green-600"
             name="deliveryMode"
-            value="LBC"
+            value="lbc"
+            checked
             @change="handleDeliveryChange"
           /><span class="ml-2 text-gray-700">LBC</span>
         </label>
@@ -41,7 +42,7 @@
       <h4 class="text-sm text-gray-500 font-medium mb-3">
         Estimated Date of Delivery
         <div class="text-lg text-gray-700 font-semibold">
-          {{ delivery.deliveryDate }}
+          {{ deliveryDate }}
         </div>
       </h4>
     </div>
@@ -59,6 +60,9 @@ export default {
   components: {
     InputTextField,
   },
+  props: {
+    errors: { type: Object },
+  },
   // mounted() {
   //   debugger;
   //   var today = new Date();
@@ -68,21 +72,23 @@ export default {
   // },
   data() {
     return {
-      errors: {},
       delivery: {
         address: "",
-        mode: "",
-        deliveryDate: newdate,
+        deliveryMode: "lbc",
       },
+      deliveryDate: newdate,
     };
   },
+  // mounted() {
+  //   this.$emit("change", this.delivery);
+  // },
   methods: {
     handleChange(e) {
       this.delivery[e.target.name] = e.target.value;
       this.$emit("change", this.delivery);
     },
     handleDeliveryChange(e) {
-      this.delivery.mode = e.target.value;
+      this.delivery.deliveryMode = e.target.value;
       this.$emit("change", this.delivery);
     },
   },

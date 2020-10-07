@@ -15,6 +15,10 @@ export default {
     },
   },
   mutations: {
+    CLEAR_CART(state) {
+      state.cart = [];
+      state.total = 0;
+    },
     ADD_TO_CART(state, item) {
       state.cart = [{ ...item }, ...state.cart];
     },

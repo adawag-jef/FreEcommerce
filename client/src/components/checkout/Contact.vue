@@ -65,9 +65,11 @@ export default {
   components: {
     InputTextField,
   },
+  props: {
+    errors: { type: Object },
+  },
   data() {
     return {
-      errors: {},
       contact: {
         name: "",
         email: "",
@@ -79,6 +81,9 @@ export default {
       },
     };
   },
+  // mounted() {
+  //   this.$emit("change", this.contact);
+  // },
   methods: {
     handleChange(e) {
       this.contact[e.target.name] = e.target.value;

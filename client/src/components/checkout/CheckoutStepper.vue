@@ -41,13 +41,13 @@
         enter-active-class="animate__animated animate__fadeInRight"
         leave-active-class="animate__animated animate__fadeOutLeft"
       >
-        <div v-show="currentStep === 1" :key="currentStep">
-          <Contact @change="mapContactValue" />
+        <div v-show="currentStep === 1" :key="1">
+          <Contact @change="mapContactValue" :errors="errors" />
         </div>
-        <div v-show="currentStep === 2" :key="currentStep">
-          <Shipping @change="mapShippingValue" />
+        <div v-show="currentStep === 2" :key="2">
+          <Shipping @change="mapShippingValue" :errors="errors" />
         </div>
-        <div v-show="currentStep === 3" :key="currentStep"><Payment /></div>
+        <div v-show="currentStep === 3" :key="3"><Payment /></div>
       </transition-group>
       <div class="flex items-center justify-between mt-8">
         <button
@@ -108,6 +108,7 @@ export default {
       disableNext: false,
       contactForm: {},
       shippingForm: {},
+      errors: {},
     };
   },
   methods: {
@@ -131,10 +132,21 @@ export default {
     mapShippingValue(val) {
       this.shippingForm = val;
     },
-    submit() {
+    async submit() {
       console.log("Submitting...");
-      // console.log(this.contactForm);
-      console.log(this.shippingForm);
+      try {
+        await this.$store.dispatch("transaction/sendTransaction", {
+          ...this.contactForm,
+          ...this.shippingForm,
+        });
+        this.$store.commit("cart/CLEAR_CART");
+        this.$toasted.success("Successfull made transaction.");
+        this.$router.push("/");
+      } catch (error) {
+        this.currentStep = 1;
+        this.disableNext = false;
+        this.errors = error;
+      }
     },
   },
 };
