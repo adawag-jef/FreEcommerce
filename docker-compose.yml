@@ -1,0 +1,11 @@
+version: "3"
+services:
+  web:
+    image: ecommerce_image:latest
+    build: .
+    volumes:
+      - .:/ecommerce_web
+    ports:
+      - "8080:5000"
+    container_name: ecommerce_container
+    restart: always
